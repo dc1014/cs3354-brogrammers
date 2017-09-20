@@ -34,4 +34,4 @@
 1. Messages should be handled via an encrypted channel
 2. Failure to connect to service or pass message should result in error
 
-![use case diagrams]('./use-cases.png')
+![use case diagrams]('./https://github.com/dc1014/cs3354-brogrammers/blob/add/requirements/use-cases.png')
