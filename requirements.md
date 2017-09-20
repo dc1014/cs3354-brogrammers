@@ -33,3 +33,5 @@
 
 1. Messages should be handled via an encrypted channel
 2. Failure to connect to service or pass message should result in error
+
+![use case diagrams]('./use-cases.png')
