@@ -14,15 +14,17 @@
 ### Server
 1. Socket Management  
    1.1 Server should be able to create socket connection with client.  
-   1.2 Failure to connect to service or pass message should result in error.  
+   1.2 Failure to connect to service or pass message should result in error. 
+   1.3 In case of error, there should be a backup or retry option for the user.   
 2. Messaging  
    2.1 Server should be able to pass message to all users in a channel.  
+   2.2 In case of message not received, the user should get retry option or error message.
 
 3. Channel Management  
    3.1 When a Client attempts to join a channel, the server puts the Client in as long as their nickname isn't taken and the channel exists. If the channel does not exist, the server will create the channel and then put the Client inside.  
    3.2 When the last Client in a channel leaves, the Server will destroy the channel.
    3.3 If a Client's nickname is taken, the server will inform the client to pick a new name.  
-
+   3.4 The nickname is just for that chat and does not stay permanent.
 ### Client
 
 1. Socket Management  
