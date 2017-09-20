@@ -27,7 +27,7 @@
 
 1. Socket Management  
    1.1. Client should be able to connect to the server.
-    
+
 2. Chat Room  
    1.1 Users should be able to set nickname.  
    2.2 Users should be able to join a channel.  
@@ -38,3 +38,5 @@
 ## Non-functional Requirements
    1. Messages should be handled via an encrypted channel.  
    2. Bookmarks should be stored Client side after the Client code terminates.  
+
+   ![use case diagrams]('./https://github.com/dc1014/cs3354-brogrammers/blob/add/requirements/use-cases.png')
