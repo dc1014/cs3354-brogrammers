@@ -38,7 +38,7 @@
 
 2. Chat Room  
    2.1 The Chat Room scene will contain a text field and a send button. When the send button is pressed, the text in the text field will be sent to the Server.  
-   2.2 Users should be able to send messages to the channel. The client will then update the message interface with the new message with some indication that the message is sending, which it will remove when the server responds with an okay. If the server responds with an error, the Client will notify the user that the message failed to send and remove the message.  
+   2.2 Users should be able to send messages to the channel. The client will then update the message interface with the new message with some indication that the message is sending, which it will remove when the server responds with an okay. If the server responds with an error, the Client will notify the user that the message failed to send and remove the message, or provide an option to attempt to resend the message.  
    2.3 The client should be listening for incoming messages from the server. When the Client receives a message, it is appended to the message interface, which is displayed above the text field and send button.  
    2.4 Users should be able to leave the channel. This will return the client to the Home Page scene.
    2.5 The client should be able to bookmark the current channel. This will add it to the bookmark list on the home page.
