@@ -1,0 +1,22 @@
+title Set Nickname Sequence Diagram
+
+ClientApp->*HomePage: Show()
+HomePage->*NicknamePanel: new
+
+#NicknamePanel covered by daniel
+Set Nickname
+HomePage->NicknamePanel: onClick()
+NicknamePanel->NicknamePanel: getNickname()
+NicknamePanel->NicknamePanel: setNickname(nickname n)
+NicknamePanel->NicknamePanel: getNickname()
+NicknamePanel-->*HomePage: nickname
+#BookmarksPanel covered by Nishant
+
+HomePage->ClientApp:close()
+ClientApp->HomePage:destruct()
+destroy JoinPanel
+HomePage->NicknamePanel:destruct()
+destroy NicknamePanel
+destroy HomePage
+destroy ClientApp
+
