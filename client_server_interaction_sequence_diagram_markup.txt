@@ -1,0 +1,58 @@
+title Client/Server Interaction
+loop While App is running
+loop While response != success
+ClientApp->+WebsocketClient:joinChannel()
+WebsocketClient->+WebsocketServer:connectToServer()
+WebsocketServer->WebsocketServer: onOpen() event
+WebsocketServer-->-WebsocketClient:response
+WebsocketClient->+WebsocketServer: joinChannel()
+WebsocketServer->ChannelController:onMessage()
+ChannelController->ChannelController:exectute()
+opt Channel doesn't exist
+ChannelController->*Channel:Create Channel
+end
+ChannelController->Channel:add() user
+Channel-->ChannelController:response
+ChannelController-->WebsocketServer:sendMessage()
+WebsocketServer-->-WebsocketClient:response
+WebsocketClient-->ClientApp:response
+ClientApp->ClientApp:Update UI
+end
+loop Until user clicks leaveButton
+ClientApp->WebsocketClient:messageButton clicked
+WebsocketClient->+WebsocketServer:sendMessage()
+WebsocketServer->ChannelController:onMessage()
+ChannelController->ChannelController:sendMessageToChannel()
+ChannelController-->WebsocketServer:sendMessage()
+WebsocketServer-->-WebsocketClient:response
+WebsocketClient-->ClientApp:response
+ClientApp->ClientApp:Update UI
+end
+ClientApp->WebsocketClient:leaveButton clicked
+WebsocketClient->+WebsocketServer:sendMessage()
+WebsocketServer->ChannelController: onMessage()
+ChannelController->ChannelController: execute()
+ChannelController->Channel: Remove user
+Channel->Channel:remove()
+Channel-->ChannelController:response
+opt Channel is empty
+ChannelController->Channel:Destroy
+destroy Channel
+end
+ChannelController-->WebsocketServer:sendMessage()
+WebsocketServer-->-WebsocketClient:response
+WebsocketClient-->ClientApp:response
+ClientApp->ClientApp: Update UI
+end
+ClientApp->WebsocketClient:User closes App
+WebsocketClient->+WebsocketServer: Connection closed
+WebsocketServer->ChannelController: onClose()
+opt User still in channel
+ChannelController->Channel: Remove user
+Channel->*Channel:remove()
+Channel-->ChannelController:response
+opt Channel is empty
+ChannelController->Channel:Destroy
+destroy Channel
+end
+destroy WebsocketClient
