@@ -1,22 +1,35 @@
 title Set Nickname Sequence Diagram
+":ClientApp"->+":ClientApp": Application Launches
+":ClientApp"->+":HomePage": Show()
+":HomePage"->+":NicknamePanel": new()
+":NicknamePanel"->+":NicknamePanel": getNickname()
+":NicknamePanel"-->-":HomePage" : Panel
 
-ClientApp->*HomePage: Show()
-HomePage->*NicknamePanel: new
+#Set Nickname
+":HomePage"->+":NicknamePanel": onClick()
 
-#NicknamePanel covered by daniel
-Set Nickname
-HomePage->NicknamePanel: onClick()
-NicknamePanel->NicknamePanel: getNickname()
-NicknamePanel->NicknamePanel: setNickname(nickname n)
-NicknamePanel->NicknamePanel: getNickname()
-NicknamePanel-->*HomePage: nickname
-#BookmarksPanel covered by Nishant
+":NicknamePanel"->-":NicknamePanel": setNickname(nickname n)
+":NicknamePanel"->+":NicknamePanel": getNickname()
+":NicknamePanel"-->-":HomePage" : nickname
 
-HomePage->ClientApp:close()
-ClientApp->HomePage:destruct()
-destroy JoinPanel
-HomePage->NicknamePanel:destruct()
-destroy NicknamePanel
-destroy HomePage
-destroy ClientApp
+alt Valid Nickname
+":ClientApp"->+":WebsocketClient":joinChannel(channelName c, nickname n)
+":WebsocketClient"->+":WebsocketServer":connectToServer()
+":WebsocketServer"->+":WebsocketServer": onOpen() event
+":WebsocketServer"-->-":WebsocketClient":response
 
+else Invalid Nickname
+":ClientApp"->+":WebsocketClient":joinChannel(channelName c, nickname n)
+":WebsocketClient"->+":WebsocketServer":connectToServer()
+":WebsocketServer"->+":WebsocketServer": onOpen() event
+":WebsocketServer"-->-":WebsocketClient":response
+":WebsocketClient"-->-":HomePage": error
+end
+":HomePage"->":ClientApp":close()
+":ClientApp"->":HomePage":destruct()
+":ClientApp"->":WebsocketClient":destruct()
+":HomePage"->":NicknamePanel":destruct()
+destroy ":NicknamePanel"
+destroy ":HomePage"
+destroy ":ClientApp"
+destroy ":WebsocketClient"
