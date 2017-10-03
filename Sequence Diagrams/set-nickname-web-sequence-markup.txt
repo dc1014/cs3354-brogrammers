@@ -1,6 +1,6 @@
 title Set Nickname Sequence Diagram
 ":ClientApp"->+":ClientApp": Application Launches
-":ClientApp"->+":HomePage": Show()
+":ClientApp"->+":HomePage": show()
 ":HomePage"->+":NicknamePanel": new()
 ":NicknamePanel"->+":NicknamePanel": getNickname()
 ":NicknamePanel"-->-":HomePage" : Panel
@@ -12,23 +12,41 @@ title Set Nickname Sequence Diagram
 ":NicknamePanel"->+":NicknamePanel": getNickname()
 ":NicknamePanel"-->-":HomePage" : nickname
 
-alt Valid Nickname
 ":ClientApp"->+":WebsocketClient":joinChannel(channelName c, nickname n)
 ":WebsocketClient"->+":WebsocketServer":connectToServer()
-":WebsocketServer"->+":WebsocketServer": onOpen() event
+":WebsocketServer"->+":WebsocketServer": onOpen()
 ":WebsocketServer"-->-":WebsocketClient":response
 
+alt Valid Nickname
+":WebsocketClient"->":WebsocketServer": joinChannel(channelName c, nickname n)
+":WebsocketServer"->+":ChannelController": onMessage(session s, message m)
+":ChannelController"->":ChannelController": execute(command c, session s, message m)
+opt Channel doesn't exist
+":ChannelController"->*":Channel":new(name n, session s)
+end
+":ChannelController"->+":Channel":add(user u)
+":Channel"->":Channel":add(user u)
+":Channel"-->+":ChannelController":response
+":ChannelController"-->-":WebsocketServer":sendMessage(message m, session s)
+":WebsocketServer"-->":WebsocketClient":response
+":WebsocketClient"-->+":ClientApp":response
+":ClientApp"->-":ClientApp":updateUI
 else Invalid Nickname
-":ClientApp"->+":WebsocketClient":joinChannel(channelName c, nickname n)
-":WebsocketClient"->+":WebsocketServer":connectToServer()
-":WebsocketServer"->+":WebsocketServer": onOpen() event
-":WebsocketServer"-->-":WebsocketClient":response
-":WebsocketClient"-->-":HomePage": error
+":WebsocketClient"->":WebsocketServer": joinChannel(channelName c, nickname n)
+":WebsocketServer"->+":ChannelController": onMessage(session s, message m)
+":ChannelController"->":ChannelController": execute()
+":ChannelController"->+":Channel":add(user u)
+":Channel"->":Channel":add(user u)
+":Channel"-->-":ChannelController":error
+":ChannelController"-->":WebsocketServer":sendMessage(message m, session s)
+":WebsocketServer"-->":WebsocketClient":error
+":WebsocketClient"-->":ClientApp":error
+":ClientApp"->":ClientApp":updateUI
 end
 ":HomePage"->":ClientApp":close()
 ":ClientApp"->":HomePage":destruct()
-":ClientApp"->":WebsocketClient":destruct()
 ":HomePage"->":NicknamePanel":destruct()
+":ClientApp"->-":WebsocketClient":destruct()
 destroy ":NicknamePanel"
 destroy ":HomePage"
 destroy ":ClientApp"
