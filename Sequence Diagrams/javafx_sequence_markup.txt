@@ -1,27 +1,27 @@
 title JavaFX Sequence Diagram
 
-ClientApp->+HomePage: Show()
-HomePage->+JoinPanel: new
-HomePage->+NicknamePanel: new
-HomePage->+BookmarksPanel: new
+":ClientApp"->+":HomePage": Show()
+":HomePage"->+":JoinPanel": new
+":HomePage"->+":NicknamePanel": new
+":HomePage"->+":BookmarksPanel": new
 
 opt Join Channel
-JoinPanel->JoinPanel: joinButton Clicked
-JoinPanel->HomePage: Hide()
-JoinPanel->+ChannelPage: Show()
-JoinPanel->+WebSocketClient: connectToServer()
+":JoinPanel"->":JoinPanel": joinButton Clicked
+":JoinPanel"->":HomePage": Hide()
+":JoinPanel"->+":ChannelPage": Show()
+":JoinPanel"->+":WebSocketClient": connectToServer()
 end
 
 #NicknamePanel covered by daniel
 #BookmarksPanel covered by Nishant
 
-HomePage->ClientApp:close()
-ClientApp->HomePage:destruct()
-HomePage->-JoinPanel:destruct()
-destroy JoinPanel
-HomePage->NicknamePanel:destruct()
-destroy NicknamePanel
-HomePage->BookmarksPanel:destruct()
-destroy BookmarksPanel
-destroy HomePage
-destroy ClientApp
+":HomePage"->":ClientApp":close()
+":ClientApp"->":HomePage":destruct()
+":HomePage"->-":JoinPanel":destruct()
+destroy ":JoinPanel"
+":HomePage"->":NicknamePanel":destruct()
+destroy ":NicknamePanel"
+":HomePage"->":BookmarksPanel":destruct()
+destroy ":BookmarksPanel"
+destroy ":HomePage"
+destroy ":ClientApp"
