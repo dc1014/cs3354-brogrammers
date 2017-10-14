@@ -6,7 +6,7 @@ title JavaFX Sequence Diagram
 ":HomePage"->+":BookmarksPanel": new
 
 opt Join Channel
-":JoinPanel"->":JoinPanel": joinButton Clicked
+":JoinPanel"->":JoinPanel": eventHandler(joinButton)
 ":JoinPanel"->":HomePage": Hide()
 ":JoinPanel"->+":ChannelPage": Show()
 ":JoinPanel"->+":WebSocketClient": connectToServer()
@@ -15,7 +15,7 @@ end
 #NicknamePanel covered by daniel
 #BookmarksPanel covered by Nishant
 
-":HomePage"->":ClientApp":close()
+":HomePage"->":ClientApp":System.exit()
 ":ClientApp"->":HomePage":destruct()
 ":HomePage"->-":JoinPanel":destruct()
 destroy ":JoinPanel"

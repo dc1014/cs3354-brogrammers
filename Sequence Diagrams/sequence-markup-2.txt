@@ -1,0 +1,36 @@
+title BookmarksPanel Sequence Diagram
+
+opt Create Lifelines
+":HomePage"->+":BookmarksPanel":
+":HomePage"->+":ClientApp":
+":HomePage"->+":WebSocketClient":
+":HomePage"->+":ChannelPage":
+":ClientApp"->+":HomePage":
+end
+
+alt Sort Clicked
+":HomePage"->":BookmarksPanel":eventHandler(Sort)
+":BookmarksPanel"->":BookmarksPanel":sortBookmark()
+end
+
+alt Add Clicked
+":HomePage"->":BookmarksPanel":eventHandler(Add)
+":BookmarksPanel"->":BookmarksPanel":addBookmarks()
+end
+
+alt Remove Clicked
+":HomePage"->":BookmarksPanel":eventHandler(Remove)
+":BookmarksPanel"->":BookmarksPanel":removeBookmarks()
+end
+
+alt Join Clicked
+":HomePage"->":BookmarksPanel":eventHandler(Join)
+":BookmarksPanel"->":ClientApp":joinChannel()
+":ClientApp"->":WebSocketClient":joinChannel()
+":WebSocketClient"->":WebSocketClient":connectToServer()
+":WebSocketClient"->":ClientApp":return()
+":ClientApp"->":BookmarksPanel":destruct()
+destroy ":BookmarksPanel"
+":ClientApp"->":HomePage":Hide()
+":ClientApp"->":ChannelPage":Show()
+end
