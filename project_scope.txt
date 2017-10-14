@@ -1,28 +1,25 @@
-Dynamic Chat Room
+Dynamic Chat channel
 	1  Client
 		1.1  Home Functionality
-			1.1.1	Set default nickname
-			1.1.2	Join room (prompt for nickname if no default or is taken)
-			1.1.3	Display bookmarked rooms
-			1.1.4	Add bookmarked room (by name)
-			1.1.5	Remove bookmarked room
-			1.1.6	Sort bookmarked rooms (alphabetically, most recently used, first joined)
-		1.2  In-Room Functionality
-			1.2.1	Receive messages from current room
-			1.2.2	Send messages to current room
-			1.2.3	Bookmark room
-			1.2.4	Display current users in room
-			1.2.5	Highlight all messages by user
-			1.2.6	Leave room
-			1.2.7	Change current nickname
+			1.1.1	Set nickname
+			1.1.2	Join channel (prompt for new nickname if taken or if none set)
+			1.1.3	Display bookmarked channels
+			1.1.4	Remove bookmarked channel
+			1.1.5	Sort bookmarked channels (alphabetically, most recently used, first joined)
+		1.2  In-Channel Functionality
+			1.2.1	Receive messages from current channel
+			1.2.2	Send messages to current channel
+			1.2.3	Bookmark channel
+			1.2.4	Display current users in channel
+			1.2.5	Leave channel
+			1.2.6	Change current nickname
 	2  Server
 		2.1  Serving Clients
-			2.1.1	Add user to room
-			2.1.2	Create room if doesnt exist
-			2.1.3	Check if nickname is taken
+			2.1.1	Add user to channel
+			2.1.2	Create channel if channel doesnt exist
+			2.1.3	Check if client nickname is taken
 			2.1.4	Recieve message from client
-			2.1.5	Send message to room
-			2.1.6	Remove user from room
-		2.2  Maintainance
-			2.2.1	Destroy empty rooms
-			2.2.2	Send message to all users (i.e. server restarting)
+			2.1.5	Send message to channel
+			2.1.6	Remove user from channel
+		2.2  Channel Management
+			2.2.1	Destroy empty channels
