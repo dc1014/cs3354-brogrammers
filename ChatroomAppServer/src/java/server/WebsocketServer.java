@@ -40,7 +40,6 @@ public class WebsocketServer {
     //called asynchronously when a message is recieved
     @OnMessage
     public void onMessage(String message, Session session) {
-        System.out.println(message);
         String response = ChannelController.getInstance().parse(message, session);
         try {
             session.getBasicRemote().sendText(response);

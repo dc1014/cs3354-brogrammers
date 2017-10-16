@@ -41,7 +41,7 @@ public class ChannelController {
     public String parse(String message, Session session) {
         int i = message.indexOf(DELIM);
         if (i == -1) {
-            return "Invalid command format";
+            return "ERROR/Invalid command format";
         }
         String command = message.substring(0, i);
         message = message.substring(i+1);
@@ -65,8 +65,8 @@ public class ChannelController {
             case "list": Channel c = getChannel(message);
                         if(c != null)
                             return c.toString();
-                        return "Channel not found";
-            default:  return "Command not found";
+                        return "ERROR/Channel not found";
+            default:  return "ERROR/Command not found";
         }
     }
 
@@ -75,9 +75,13 @@ public class ChannelController {
         //parses for the format [channel_name]+[DELIM]+[nickname]
         int i = message.indexOf(DELIM);
         if (i == -1)
-            return "Invalid channel/nickname format";
+            return "ERROR/Invalid channel/nickname format";
         String channel_name = message.substring(0, i);
         String nickname = message.substring(i+1);
+        
+        if (channel_name.matches("^\\s*$") || channel_name.matches("^.*[^a-zA-Z0-9\\s].*$"))
+            return "ERROR/Invalid channel name";
+        
         Channel c = getChannel(channel_name);
         //if channel doesnt exist, make it
         if (c == null) {
@@ -92,7 +96,7 @@ public class ChannelController {
     //removes user from a channel
     private String leaveChannel(String channelName, Session session) {
         Channel c = getChannel(channelName);
-        if (c == null) return "Error: Not in that channel";
+        if (c == null) return "ERROR/Not in that channel";
         String response = c.removeBySession(session);
         if (c.isEmpty())
             channels.remove(c);
@@ -104,19 +108,19 @@ public class ChannelController {
     //returns success to the sender
     private String sendMessageToChannel(String message, Session session) {
         Channel c = getChannelBySession(session);
-        if (c == null) return "Error: Not in a channel";
+        if (c == null) return "ERROR/Not in a channel";
         String nickname = null;
         for (User u: c.users) {
             if (u.session.getId().equals(session.getId()))
                 nickname = u.nickname;
         }
         if (nickname == null)
-            return "Error: Not in a channel";
+            return "ERROR/Not in a channel";
         for (User u: c.users) {
             if (!u.session.getId().equals(session.getId()))
-                WebsocketServer.sendMessage(nickname+">"+message, u.session);
+                WebsocketServer.sendMessage("MESSAGE/"+nickname+">"+message, u.session);
         }
-        return "Success";
+        return "SUCCESS";
     }
 
     //finds a channel given a user's session

@@ -68,7 +68,7 @@ public class WebsocketClient {
   private void connectToWebSocket() {
     WebSocketContainer container = ContainerProvider.getWebSocketContainer();
     try {
-      URI uri = URI.create("ws://localhost:8080/server/websocket");
+      URI uri = URI.create("ws://localhost:80/server/websocket");
       container.connectToServer(this, uri);
     } catch (DeploymentException | IOException ex) {
       LOGGER.log(Level.SEVERE, null, ex);
