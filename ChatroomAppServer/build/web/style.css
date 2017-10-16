@@ -78,6 +78,7 @@ li {
     padding:0;
     margin:0;
     border:none;
+    background-color:#999999;
 }
 #bookmarks li{
     background-color: #DDDDDD;

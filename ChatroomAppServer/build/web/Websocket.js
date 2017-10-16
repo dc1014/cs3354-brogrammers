@@ -3,7 +3,7 @@ var nickname = "";
 var channel;
 var bookmarks = [];
 window.onload = () => {
-    socket = new WebSocket("ws://localhost:80/server/websocket");
+    socket = new WebSocket("ws://47.186.10.102:80/websocket");
     socket.onmessage = (e) => {
         split(e.data, (command, message) => {
             switch (command) {
