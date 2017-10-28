@@ -5,10 +5,12 @@
  */
 package brogrammers;
 
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
 /**
@@ -25,6 +27,17 @@ public class ClientApp extends Application {
         
         stage.setScene(scene);
         stage.show();
+        
+        //Nickname Box
+        TextInputDialog dialog = new TextInputDialog("walter");
+        dialog.setTitle("Text Input Dialog");
+        dialog.setHeaderText("Look, a Text Input Dialog");
+        dialog.setContentText("Please enter your name:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+        System.out.println("Your name: " + result.get());
+        }
+        result.ifPresent(name -> System.out.println("Your name: " + name));
     }
 
     /**
