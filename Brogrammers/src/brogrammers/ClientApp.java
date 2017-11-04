@@ -20,13 +20,13 @@ import javafx.stage.Stage;
  */
 public class ClientApp extends Application {
     
-    private final ArrayList<Bookmark> bookmarks = new ArrayList();
+    private static final ArrayList<Bookmark> bookmarks = new ArrayList();
     
-    public ArrayList<Bookmark> getBookmarks() {
+    public static ArrayList<Bookmark> getBookmarks() {
         return bookmarks;
     }
     
-    public void connectToServer() {
+    public static void connectToServer() {
         //connect to server
     }
     
