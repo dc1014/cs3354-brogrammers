@@ -19,6 +19,7 @@ public class ChannelController {
     
     //Thread-safe set of channels
     private final Set<Channel> channels = Collections.synchronizedSet(new HashSet());
+    public final Set<User> users = Collections.synchronizedSet(new HashSet());
     
     //instance of this to return for getInstance()
     private static ChannelController instance = null;
@@ -59,6 +60,7 @@ public class ChannelController {
     //executes a command
     private String execute(String command, String message, Session session) {
         switch (command) {
+            case "setNickname": return setNickname(message, session);
             case "join": return joinChannel(message, session);
             case "send": return sendMessageToChannel(message, session);
             case "exit": return leaveChannel(message, session);
@@ -68,6 +70,21 @@ public class ChannelController {
                         return "ERROR/Channel not found";
             default:  return "ERROR/Command not found";
         }
+    }
+
+    private String setNickname(String message, Session session) {
+        int i = message.indexOf(DELIM);
+        if (i == -1)
+            return "ERROR/Invalid channel/nickname format";
+        String nickname = message.substring(0, i);
+
+        for(User user : users) {
+            if (user.nickname == nickname) return "ERROR/nickname taken!";
+        }
+
+        users.add(new User(session, nickname));
+
+        return "SUCCESS";
     }
 
     //attempts to put a user into a channel
