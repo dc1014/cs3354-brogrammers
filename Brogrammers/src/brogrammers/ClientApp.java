@@ -5,6 +5,7 @@
  */
 package brogrammers;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +20,19 @@ import javafx.stage.Stage;
  */
 public class ClientApp extends Application {
     
+    private final ArrayList<Bookmark> bookmarks = new ArrayList();
+    
+    public ArrayList<Bookmark> getBookmarks() {
+        return bookmarks;
+    }
+    
+    public void connectToServer() {
+        //connect to server
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
+        
         Parent root = FXMLLoader.load(getClass().getResource("FXMLHomePage.fxml"));
         
         Scene scene = new Scene(root);

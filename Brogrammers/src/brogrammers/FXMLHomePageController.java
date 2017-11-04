@@ -18,6 +18,11 @@ import javafx.scene.control.Label;
  */
 public class FXMLHomePageController implements Initializable {
     
+    
+    public void sortBookmarks() {
+        //sort the bookmarks
+    }
+    
     @FXML
     private Label label;
     
