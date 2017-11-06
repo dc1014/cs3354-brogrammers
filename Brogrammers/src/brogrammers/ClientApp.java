@@ -7,6 +7,8 @@ package brogrammers;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,12 +28,10 @@ public class ClientApp extends Application {
         return bookmarks;
     }
     
-    public static void connectToServer() {
-        //connect to server
-    }
     
     @Override
     public void start(Stage stage) throws Exception {
+        
         
         Parent root = FXMLLoader.load(getClass().getResource("FXMLHomePage.fxml"));
         
@@ -46,16 +46,35 @@ public class ClientApp extends Application {
         dialog.setHeaderText("Look, a Text Input Dialog");
         dialog.setContentText("Please enter your name:");
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
-        System.out.println("Your name: " + result.get());
-        }
-        result.ifPresent(name -> System.out.println("Your name: " + name));
+        
+        result.ifPresent(name -> {
+            try {
+                System.out.println(name);
+                WebsocketClient.getInstance().setNickname(name);
+            } catch (Exception ex) {
+                Logger.getLogger(ClientApp.class.getName()).log(Level.SEVERE, null, ex);
+            }    
+        });
+        
+    }
+    
+    public static void print(String txt) {
+        System.out.println(txt);
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        while(true) {
+            try {
+                WebsocketClient.getInstance().connectToWebSocket();
+            } catch (Exception ex) {
+                Logger.getLogger(ClientApp.class.getName()).log(Level.SEVERE, null, ex);
+                continue;
+            }
+            break;
+        }
         launch(args);
     }
     

@@ -48,7 +48,7 @@ public class WebsocketClient {
      */
     @OnOpen
     public void onOpen(Session session) {
-
+        this.session = session;
     }
 
     /*
@@ -59,7 +59,11 @@ public class WebsocketClient {
      */
     @OnMessage
     public void onMessage(String message) {
-
+        System.out.println(message);
+        //TODO
+        //Parse message
+        //switch statement
+        //call executing code
     }
 
     /*
@@ -86,6 +90,19 @@ public class WebsocketClient {
     }
     
     /*
+     *Attempts to set a nickname on the remote endpoint
+     *
+     *@param nickname The nickname to be set
+     *@exception Exception throws exception if the message fails to send
+     */
+    public void setNickname(String nickname) throws Exception {
+        if (session!=null) {
+            String data = Command.SETNAME + Command.DELIM + nickname;
+            session.getBasicRemote().sendText(data);
+        }
+    }
+    
+    /*
      *Attempts to join a channel on the remote endpoint
      *
      *@param name the name of the channel to be joined
@@ -107,6 +124,18 @@ public class WebsocketClient {
     public void leaveChannel(String name) throws Exception {
         if (session!=null) {
             String data = Command.LEAVE + Command.DELIM + name;
+            session.getBasicRemote().sendText(data);
+        }
+    }
+    
+    /*
+     *Requests a list of all users in the channel
+     *
+     *@exception Exception throws exception if the message fails to send
+     */
+    public void listUsersInChannel() throws Exception {
+        if (session!=null) {
+            String data = Command.LIST + Command.DELIM;
             session.getBasicRemote().sendText(data);
         }
     }
