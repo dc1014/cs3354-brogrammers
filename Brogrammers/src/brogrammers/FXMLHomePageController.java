@@ -6,11 +6,13 @@
 package brogrammers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import comparator.*;
 
 /**
  *
@@ -20,7 +22,8 @@ public class FXMLHomePageController implements Initializable {
     
     
     public void sortBookmarks() {
-        //sort the bookmarks
+        ArrayList<Bookmark> bookmarks = ClientApp.getBookmarks();
+        bookmarks.sort(new AlphabeticalComparator());
     }
     
     @FXML

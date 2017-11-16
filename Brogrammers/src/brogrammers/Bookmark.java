@@ -9,7 +9,7 @@ package brogrammers;
  *
  * @author jay
  */
-class Bookmark {
+public class Bookmark {
     private String channel;
     public Bookmark(String channel) {
         this.channel = channel;
@@ -18,4 +18,6 @@ class Bookmark {
     public String getChannel() {
         return channel;
     }
+    
+  
 }
