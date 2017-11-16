@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package brogrammers;
+package WebSocket;
 
 
 import java.net.URI;
@@ -17,7 +17,7 @@ import javax.websocket.WebSocketContainer;
 import constants.Command;
 
 @ClientEndpoint
-public class WebsocketClient {
+public class WebsocketClientTest extends WebsocketClient {
 
     private static WebsocketClient instance = null;
 
@@ -28,18 +28,15 @@ public class WebsocketClient {
     */
     public static WebsocketClient getInstance() throws Exception{
         if (instance == null) 
-            instance = new WebsocketClient();
+            instance = new WebsocketClientTest();
         return instance;
     }
     
-    private Session session;
-  
-    /*
-     *Constructs the WebsocketClient instance.
-     */
-    private WebsocketClient() {       
+    private WebsocketClientTest(){
         
     }
+    
+    private Session session;
 
     /*
      *Called asynchronously when the remote enpoint connecteion is established

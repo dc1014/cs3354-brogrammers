@@ -5,6 +5,7 @@
  */
 package brogrammers;
 
+import WebSocket.WebsocketClient;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Level;
