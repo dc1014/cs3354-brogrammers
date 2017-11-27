@@ -42,10 +42,10 @@ public class ClientApp extends Application {
         stage.show();
         
         //Nickname Box
-        TextInputDialog dialog = new TextInputDialog("walter");
-        dialog.setTitle("Text Input Dialog");
-        dialog.setHeaderText("Look, a Text Input Dialog");
-        dialog.setContentText("Please enter your name:");
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("Nickname");
+        dialog.setHeaderText("Please enter your nickname");
+        dialog.setContentText("Nickname:");
         Optional<String> result = dialog.showAndWait();
         
         result.ifPresent(name -> {
@@ -67,14 +67,18 @@ public class ClientApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        while(true) {
-            try {
-                WebsocketClient.getInstance().connectToWebSocket();
-            } catch (Exception ex) {
-                Logger.getLogger(ClientApp.class.getName()).log(Level.SEVERE, null, ex);
-                continue;
+        Debugger.getInstance().setDebug(true); //Change this to false to disable debug mode
+        
+        if(!Debugger.getInstance().isDebug()){
+            while(true) {
+                try {
+                    WebsocketClient.getInstance().connectToWebSocket();
+                } catch (Exception ex) {
+                    Logger.getLogger(ClientApp.class.getName()).log(Level.SEVERE, null, ex);
+                    continue;
+                }
+                break;
             }
-            break;
         }
         launch(args);
     }

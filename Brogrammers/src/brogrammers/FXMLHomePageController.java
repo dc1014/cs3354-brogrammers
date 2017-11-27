@@ -11,8 +11,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import comparator.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 /**
  *
@@ -20,19 +21,41 @@ import comparator.*;
  */
 public class FXMLHomePageController implements Initializable {
     
+    @FXML
+    private Label lbl_nickname;
+    private TextField txt_channel;
+    private Button btn_sortBookmarks;
+    private VBox bookmarksBox;
+    private boolean debug = true;
     
-    public void sortBookmarks() {
-        ArrayList<Bookmark> bookmarks = ClientApp.getBookmarks();
-        bookmarks.sort(new AlphabeticalComparator());
+    @FXML
+    private void handleBtnJoinChannel(ActionEvent e) {
+        
     }
     
     @FXML
-    private Label label;
+    private void handleBtnSortBookmarks(ActionEvent e){
+        ArrayList<Bookmark> bookmarks;
+        if(Debugger.getInstance().isDebug()){
+            bookmarks = new ArrayList<>();
+            bookmarks.add(new Bookmark("Test Channel A"));
+            bookmarks.add(new Bookmark("Test Channel B"));
+        }
+        else{
+            bookmarks = ClientApp.getBookmarks();
+        }
+        
+        bookmarks.sort(new AlphabeticalComparator());
+        renderBookmarks(bookmarks);
+    }
     
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void renderBookmarks(ArrayList<Bookmark> bookmarks){
+        bookmarksBox.getChildren().remove(0, bookmarksBox.getChildren().size()-1);
+        for (Bookmark b: bookmarks) {
+            Button btn = new Button(b.getChannel());
+            btn.setPrefWidth(391);
+            bookmarksBox.getChildren().add(btn);
+        }
     }
     
     @Override
