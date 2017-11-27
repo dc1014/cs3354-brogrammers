@@ -8,10 +8,11 @@ package server;
 import javax.websocket.Session;
 
 public class User {
-        Session session;
-        String nickname;
-        public User (Session session, String nickname) {
-            this.session = session;
-            this.nickname = nickname;
-        }
+    Session session;
+    String nickname;
+    Channel channel;
+    public User (Session session, String nickname) {
+        this.session = session;
+        this.nickname = nickname;
     }
+}

@@ -30,6 +30,7 @@ public class ClientApp extends Application {
     }
     
     
+    
     @Override
     public void start(Stage stage) throws Exception {
         
@@ -61,6 +62,10 @@ public class ClientApp extends Application {
     
     public static void print(String txt) {
         System.out.println(txt);
+    }
+    
+    public static void parse(String command, String data) {
+        System.out.println(command + "-" + data);
     }
 
     /**

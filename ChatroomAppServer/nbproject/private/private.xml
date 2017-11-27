@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jay/Documents/NetBeansProjects/ChatroomAppServer/web/style.css</file>
-            <file>file:/C:/Users/jay/Documents/NetBeansProjects/ChatroomAppServer/web/Websocket.js</file>
-            <file>file:/C:/Users/jay/Documents/NetBeansProjects/ChatroomAppServer/web/index.html</file>
+            <file>file:/C:/Users/Jay/Documents/Code/cs3354-brogrammers/ChatroomAppServer/src/java/server/Channel.java</file>
+            <file>file:/C:/Users/Jay/Documents/Code/cs3354-brogrammers/ChatroomAppServer/src/java/server/User.java</file>
+            <file>file:/C:/Users/Jay/Documents/Code/cs3354-brogrammers/ChatroomAppServer/src/java/server/ChannelController.java</file>
+            <file>file:/C:/Users/Jay/Documents/Code/cs3354-brogrammers/ChatroomAppServer/src/java/server/WebsocketServer.java</file>
         </group>
     </open-files>
 </project-private>
