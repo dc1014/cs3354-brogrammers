@@ -5,10 +5,30 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="brogrammers.FXMLHomePageController">
+<AnchorPane id="AnchorPane" prefHeight="552.0" prefWidth="701.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="brogrammers.FXMLHomePageController">
     <children>
-        <Button layoutX="126" layoutY="90" text="HomePage" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
+        <Label alignment="CENTER" layoutY="20" prefHeight="37.0" prefWidth="700.0" text="Chat Room" AnchorPane.bottomAnchor="443.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+            <font>
+                <Font name="Arial Black" size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="lbl_nickname" layoutX="50" layoutY="80" minHeight="16" minWidth="69" text="Current Nickname:" />
+        <Label layoutX="50" layoutY="130" minHeight="16" minWidth="69" text="Join a Channel:" />
+        <TextField fx:id="txt_channel" layoutX="180" layoutY="130" minHeight="16" minWidth="80" />
+        <Button fx:id="btn_joinChannel" layoutX="382.0" layoutY="130.0" onAction="#handleBtnJoinChannel" prefHeight="31.0" prefWidth="75.0" text="Join" />
+        
+        <Label alignment="CENTER" layoutY="220" prefHeight="23.0" prefWidth="701.0" text="Bookmarks">
+            <font>
+                <Font name="Arial Black" size="15.0" />
+            </font>
+        </Label>
+        <Button fx:id="btn_sortBookmarks" layoutX="240.0" layoutY="250.0" onAction="#handleBtnSortBookmarks" text="Sort Bookmarks Alphabetically" />
+      <VBox fx:id="bookmarksBox" layoutX="160.0" layoutY="300.0" prefHeight="230.0" prefWidth="386.0" >
+         <children>
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="391.0" text="Button" />
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
