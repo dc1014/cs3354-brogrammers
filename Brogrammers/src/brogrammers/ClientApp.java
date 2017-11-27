@@ -32,15 +32,9 @@ public class ClientApp extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        
-        
         Parent root = FXMLLoader.load(getClass().getResource("FXMLHomePage.fxml"));
-        
         Scene scene = new Scene(root);
-        
         stage.setScene(scene);
-        stage.show();
-        
         //Nickname Box
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Nickname");
@@ -54,7 +48,8 @@ public class ClientApp extends Application {
                 WebsocketClient.getInstance().setNickname(name);
             } catch (Exception ex) {
                 Logger.getLogger(ClientApp.class.getName()).log(Level.SEVERE, null, ex);
-            }    
+            }
+            stage.show();
         });
         
     }

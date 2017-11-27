@@ -10,7 +10,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 /**
  *
@@ -19,12 +20,13 @@ import javafx.scene.control.Label;
 public class FXMLChannelPageController implements Initializable {
     
     @FXML
-    private Label label;
+    private TextField txt_message;
+    @FXML
+    private VBox box_messages;
     
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void handleBtnSend(ActionEvent event) {
+        //TODO
     }
     
     @Override
