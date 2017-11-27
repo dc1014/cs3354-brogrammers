@@ -40,12 +40,7 @@ public class WebsocketServer {
     //called asynchronously when a message is recieved
     @OnMessage
     public void onMessage(String message, Session session) {
-        String response = ChannelController.getInstance().parse(message, session);
-        try {
-            session.getBasicRemote().sendText(response);
-        } catch (IOException ex) {
-            Logger.getLogger(WebsocketServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ChannelController.getInstance().parse(message, session);
     }
     
     //sends a String message to the given session

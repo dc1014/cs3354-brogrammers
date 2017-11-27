@@ -5,6 +5,7 @@
  */
 package server;
 
+import constants.Command;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ public class ChannelController {
     private static ChannelController instance = null;
     
     //Delimiter for commands
-    private final String DELIM = "/";
+    private final String DELIM = Command.DELIM;
        
     private ChannelController(){
     }
@@ -42,62 +43,65 @@ public class ChannelController {
     public String parse(String message, Session session) {
         int i = message.indexOf(DELIM);
         if (i == -1) {
-            return "ERROR/Invalid command format";
+            String response = Command.RESPONSE + Command.DELIM + Command.ERROR + Command.DELIM + "Invalid command format";
+            WebsocketServer.sendMessage(response, session);
+            return response;
         }
         String command = message.substring(0, i);
         message = message.substring(i+1);
-        return execute(command, message, session);
+        
+        switch (command) {
+            case Command.SETNAME: return setNickname(message, session);
+            case Command.JOIN: return joinChannel(message, session);
+            case Command.MESSAGE: return sendMessageToChannel(message, session);
+            case Command.LEAVE: return leaveChannel(getUserBySession(session));                   
+        }
+        
+        String response =  Command.RESPONSE + Command.DELIM + Command.ERROR + Command.DELIM + "Command not found";
+        WebsocketServer.sendMessage(response, session);
+        return response;
     }
     
     //disconnects a user from all channels they are in.
     //Handles user being in multiple channels.
     public void disconnect(Session session){
-        Channel c;
-        while ((c=getChannelBySession(session)) != null)
-            c.removeBySession(session);
-    }
-    
-    //executes a command
-    private String execute(String command, String message, Session session) {
-        switch (command) {
-            case "setNickname": return setNickname(message, session);
-            case "join": return joinChannel(message, session);
-            case "send": return sendMessageToChannel(message, session);
-            case "exit": return leaveChannel(message, session);
-            case "list": Channel c = getChannel(message);
-                        if(c != null)
-                            return c.toString();
-                        return "ERROR/Channel not found";
-            default:  return "ERROR/Command not found";
-        }
+        User u = getUserBySession(session);
+        users.remove(u);
+        leaveChannel(u);
     }
 
-    private String setNickname(String message, Session session) {
-        int i = message.indexOf(DELIM);
-        if (i == -1)
-            return "ERROR/Invalid channel/nickname format";
-        String nickname = message.substring(0, i);
+    String setNickname(String nickname, Session session) {
 
         for(User user : users) {
-            if (user.nickname == nickname) return "ERROR/nickname taken!";
+            if (user.nickname.equals(nickname)) {
+                String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Nickname taken";
+                WebsocketServer.sendMessage(response, session);
+                return response;
+            }
         }
 
         users.add(new User(session, nickname));
-
-        return "SUCCESS";
+        String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.SUCCESS + Command.DELIM + nickname;
+        WebsocketServer.sendMessage(response, session);
+        return response;
     }
 
     //attempts to put a user into a channel
-    private String joinChannel(String message, Session session) {
-        //parses for the format [channel_name]+[DELIM]+[nickname]
-        int i = message.indexOf(DELIM);
-        if (i == -1)
-            return "ERROR/Invalid channel/nickname format";
-        String channel_name = message.substring(0, i);
-        String nickname = message.substring(i+1);
+    String joinChannel(String channel_name, Session session) {
+        User u = getUserBySession(session);
         
-        if (channel_name.matches("^\\s*$") || channel_name.matches("^.*[^a-zA-Z0-9\\s].*$"))
-            return "ERROR/Invalid channel name";
+        
+        if (u == null) {
+            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Nickname not set";
+            WebsocketServer.sendMessage(response, session);
+            return response;
+        }
+        
+        if (isInvalidChannelName(channel_name)) {
+            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Invalid channel name";
+            WebsocketServer.sendMessage(response, session);
+            return response;
+        }
         
         Channel c = getChannel(channel_name);
         //if channel doesnt exist, make it
@@ -105,57 +109,77 @@ public class ChannelController {
             c = new Channel(channel_name);
             channels.add(c);
         }
-        //return the result of attempting to add
-        //either success or nickname taken
-        return c.add(new User(session, nickname));
+        
+        c.updateUsers(u);
+        c.users.add(u);
+        u.channel = c;        
+        
+        String response = Command.RESPONSE + Command.DELIM + Command.JOIN + Command.DELIM + Command.SUCCESS + Command.DELIM + channel_name;
+        WebsocketServer.sendMessage(response, session);
+        return response;
+    }
+    
+    boolean isInvalidChannelName(String channel_name) {
+        return channel_name.matches("^\\s*$") || channel_name.matches("^.*[^a-zA-Z0-9\\s].*$");
     }
 
     //removes user from a channel
-    private String leaveChannel(String channelName, Session session) {
-        Channel c = getChannel(channelName);
-        if (c == null) return "ERROR/Not in that channel";
-        String response = c.removeBySession(session);
+    String leaveChannel(User u) {
+        Channel c = u.channel;
+        u.channel = null;
+        c.users.remove(u);
         if (c.isEmpty())
             channels.remove(c);
-        //returns the result of attempting to remove the user from the channel
+        
+        String response = Command.RESPONSE + Command.DELIM + Command.LEAVE + Command.DELIM + Command.SUCCESS + Command.DELIM + "Left channel - " + c.name;
+        WebsocketServer.sendMessage(response, u.session);
         return response;
     }
   
     //sends a message to all users in the channel except the sender
     //returns success to the sender
-    private String sendMessageToChannel(String message, Session session) {
-        Channel c = getChannelBySession(session);
-        if (c == null) return "ERROR/Not in a channel";
-        String nickname = null;
-        for (User u: c.users) {
-            if (u.session.getId().equals(session.getId()))
-                nickname = u.nickname;
+    String sendMessageToChannel(String message, Session session) {
+        User user = getUserBySession(session);
+        if (user.channel == null) {
+            String response = Command.RESPONSE + Command.DELIM + Command.MESSAGE + Command.DELIM + Command.ERROR + Command.DELIM + "Not in a channel";
+            WebsocketServer.sendMessage(response, session);
+            return response;
         }
-        if (nickname == null)
-            return "ERROR/Not in a channel";
-        for (User u: c.users) {
-            if (!u.session.getId().equals(session.getId()))
-                WebsocketServer.sendMessage("MESSAGE/"+nickname+">"+message, u.session);
-        }
-        return "SUCCESS";
+        String response = Command.RESPONSE + Command.DELIM + Command.MESSAGE + Command.DELIM + Command.SUCCESS;
+        WebsocketServer.sendMessage(response, session);
+        
+        String nickname = user.nickname;
+        user.channel.emit(Command.MESSAGE + Command.DELIM + 
+                    Command.ERROR + Command.DELIM + nickname+">"+message);
+        return response;
     }
+    
 
     //finds a channel given a user's session
-    private Channel getChannelBySession(Session session) {
-        Iterator li = channels.iterator();
-        Channel c;
+    User getUserBySession(Session session) {
+        Iterator li = users.iterator();
+        User u;
         while (li.hasNext()) {
-            c = (Channel)li.next();
-            for (User u: c.users) {
-              if (u.session.getId().equals(session.getId()))
-                  return c;
-            }
+            u = (User)li.next();
+            if (u.session.getId().equals(session.getId()))
+                return u;
+        }
+        return null;
+    }
+    
+    User getUserByNickname(String nickname) {
+        Iterator li = users.iterator();
+        User u;
+        while (li.hasNext()) {
+            u = (User)li.next();
+            if (u.nickname.equals(nickname))
+                return u;
         }
         return null;
     }
 
     //finds a channel given the channel_name
-    private Channel getChannel(String name) {
+    Channel getChannel(String name) {
         Iterator<Channel> li = channels.iterator();
         Channel c;
         while (li.hasNext()) {

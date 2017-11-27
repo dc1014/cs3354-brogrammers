@@ -15,6 +15,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import constants.Command;
+import brogrammers.ClientApp;
 
 @ClientEndpoint
 public class WebsocketClient {
@@ -61,11 +62,10 @@ public class WebsocketClient {
      */
     @OnMessage
     public void onMessage(String message) {
-        System.out.println(message);
-        //TODO
-        //Parse message
-        //switch statement
-        //call executing code
+        int i = message.indexOf(Command.DELIM);
+        String command = message.substring(0, i);
+        String data = message.substring(i+1);
+        ClientApp.parse(command, data);
     }
 
     /*
@@ -157,7 +157,7 @@ public class WebsocketClient {
      */
     public void connectToWebSocket() throws Exception{
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        URI uri = URI.create("ws://localhost:80/server/websocket");
+        URI uri = URI.create("ws://localhost:8080/server/websocket");
         container.connectToServer(this, uri);
     }
     
