@@ -12,8 +12,8 @@ package comparator;
 import brogrammers.Bookmark;
 import java.util.Comparator;
 public class NegativeAlphabeticalComparator implements Comparator<Bookmark> {
-    @Override
-        public int compare(Bookmark o1, Bookmark o2) {
-            return (0xffffffff *(o1.getChannel().compareTo(o2.getChannel())));
+        @Override
+        public int compare(Bookmark u, Bookmark v) {
+            return (-1 *(u.getChannel().compareTo(v.getChannel())));
         }
 }
