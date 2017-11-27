@@ -16,9 +16,15 @@ import comparator.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -38,7 +44,18 @@ public class FXMLHomePageController implements Initializable {
     
     private void JoinChannel(String channelName){
         if(Debugger.getInstance().isDebug()) System.out.println( "User tried to join channel: " + channelName);
-        throw new UnsupportedOperationException(); //Because not implemented yet
+        //throw new UnsupportedOperationException(); //Because not implemented yet
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLChannelPage.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Channel "+channelName);
+            stage.setScene(new Scene(root1));  
+            stage.show();
+        }
+        catch(Exception ex){
+            Logger.getLogger(FXMLHomePageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @FXML

@@ -26,12 +26,18 @@ public class FXMLChannelPageController implements Initializable {
     
     @FXML
     private void handleBtnSend(ActionEvent event) {
-        //TODO
+        //On send message
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        // On Channel Join
+        
+    }
+    
+    @Override
+    public void finalize(){
+        //On Channel Exit
+    }
     
 }

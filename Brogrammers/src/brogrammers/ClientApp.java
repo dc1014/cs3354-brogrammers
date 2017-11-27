@@ -36,6 +36,7 @@ public class ClientApp extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLHomePage.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Chat Room by Brogrammers");
         //Nickname Box
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Nickname");

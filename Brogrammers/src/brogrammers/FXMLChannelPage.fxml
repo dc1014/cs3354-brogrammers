@@ -7,10 +7,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="487.0" prefWidth="605.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="brogrammers.FXMLChannelPageController">
+<AnchorPane id="AnchorPane" prefHeight="487.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="brogrammers.FXMLChannelPageController">
     <children>
       <Button fx:id="btn_send" layoutX="498.0" layoutY="442.0" onAction="#handleBtnSend" text="Send" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="14.0" />
-      <TextField fx:id="txt_message" layoutX="14.0" layoutY="442.0" prefHeight="31.0" prefWidth="474.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="117.0" />
+      <TextField fx:id="txt_message" layoutX="14.0" layoutY="442.0" prefHeight="31.0" prefWidth="474.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="80.0" />
       <VBox fx:id="box_messages" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </children>
 </AnchorPane>
