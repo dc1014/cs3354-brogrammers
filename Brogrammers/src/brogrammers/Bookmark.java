@@ -18,6 +18,11 @@ public class Bookmark {
     public String getChannel() {
         return channel;
     }
+
+    @Override
+    public String toString() {
+        return channel;
+    }
     
   
 }
