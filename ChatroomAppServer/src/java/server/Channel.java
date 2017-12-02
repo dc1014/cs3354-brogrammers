@@ -34,6 +34,8 @@ public class Channel {
     }
 
     public void emit(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (User u: users) {
+            WebsocketServer.sendMessage(string, u.session);
+        }
     }
 }

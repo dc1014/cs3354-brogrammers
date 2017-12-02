@@ -41,6 +41,7 @@ public class ChannelController {
     
     //parses message recieved by server. the returned value is sent back to the user
     public String parse(String message, Session session) {
+        System.out.println(message);
         int i = message.indexOf(DELIM);
         if (i == -1) {
             String response = Command.RESPONSE + Command.DELIM + Command.ERROR + Command.DELIM + "Invalid command format";
@@ -89,7 +90,11 @@ public class ChannelController {
     //attempts to put a user into a channel
     String joinChannel(String channel_name, Session session) {
         User u = getUserBySession(session);
-        
+        if (u.channel != null) {
+            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Already in a channel";
+            WebsocketServer.sendMessage(response, session);
+            return response;
+        }
         
         if (u == null) {
             String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Nickname not set";
@@ -150,7 +155,7 @@ public class ChannelController {
         
         String nickname = user.nickname;
         user.channel.emit(Command.MESSAGE + Command.DELIM + 
-                    Command.ERROR + Command.DELIM + nickname+">"+message);
+                    Command.SUCCESS + Command.DELIM + nickname+Command.DELIM+message);
         return response;
     }
     

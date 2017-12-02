@@ -20,7 +20,6 @@ import brogrammers.ClientApp;
 @ClientEndpoint
 public class WebsocketClient {
 
-    private String _nickname;
     private static WebsocketClient instance = null;
 
     /*
@@ -62,10 +61,7 @@ public class WebsocketClient {
      */
     @OnMessage
     public void onMessage(String message) {
-        int i = message.indexOf(Command.DELIM);
-        String command = message.substring(0, i);
-        String data = message.substring(i+1);
-        ClientApp.parse(command, data);
+        ClientApp.parse(message.split(Command.DELIM));
     }
 
     /*
@@ -98,18 +94,10 @@ public class WebsocketClient {
      *@exception Exception throws exception if the message fails to send
      */
     public void setNickname(String nickname) throws Exception {
-        _nickname=nickname;
         if (session!=null) {
             String data = Command.SETNAME + Command.DELIM + nickname;
             session.getBasicRemote().sendText(data);
         }
-    }
-    
-    /*
-    *Getter for the nickname
-    */
-    public String getNickname() {
-        return _nickname;
     }
     
     /*

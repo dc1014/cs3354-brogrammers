@@ -16,16 +16,9 @@ import comparator.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 /**
  *
  * @author dc
@@ -42,30 +35,14 @@ public class FXMLHomePageController implements Initializable {
     private VBox bookmarksBox;
     private boolean sortAlphabetical; //True=Alphabetical; False=Reverse Alphabetical;
     
-    private void JoinChannel(String channelName){
-        if(Debugger.getInstance().isDebug()) System.out.println( "User tried to join channel: " + channelName);
-        //throw new UnsupportedOperationException(); //Because not implemented yet
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLChannelPage.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Channel "+channelName);
-            stage.setScene(new Scene(root1));  
-            stage.show();
-        }
-        catch(Exception ex){
-            Logger.getLogger(FXMLHomePageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     @FXML
     private void handleBtnJoinChannel(ActionEvent e) {
         if(txt_channel.getText().isEmpty()){
             //Can't be empty. Add validation here.
+            return;
         }
-        else{
-            JoinChannel(txt_channel.getText());
-        }
+        String name = txt_channel.getText();
+        joinChannel(name);
     }
     
     @FXML
@@ -92,8 +69,19 @@ public class FXMLHomePageController implements Initializable {
     }
     
     private void handleChannelClick(ActionEvent e){
-        String channelName = ((Button)(e.getSource())).getText();
-        JoinChannel(channelName);
+        String name = ((Button)(e.getSource())).getText();
+        joinChannel(name);
+    }
+    
+    private void joinChannel(String name) {
+        if (Debugger.getInstance().isDebug())
+            ClientApp.enterChannelPage(name);
+        else
+            try {
+                WebsocketClient.getInstance().joinChannel(name);
+        } catch (Exception ex) {
+            Logger.getLogger(FXMLHomePageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void renderBookmarks(ArrayList<Bookmark> bookmarks){
@@ -112,12 +100,10 @@ public class FXMLHomePageController implements Initializable {
         sortAlphabetical = true;
         ArrayList<Bookmark> bookmarks = getBookmarks();
         renderBookmarks(bookmarks);
-        try {
-            lbl_nickname.setText(WebsocketClient.getInstance().getNickname());
-        } catch (Exception ex) {
-            lbl_nickname.setText("Nickname unknown or you're in debug mode");
-            Logger.getLogger(FXMLHomePageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (ClientApp.nickname != null)
+            lbl_nickname.setText(ClientApp.nickname);
+        else 
+            lbl_nickname.setText("NOT SET");
     }    
     
 }

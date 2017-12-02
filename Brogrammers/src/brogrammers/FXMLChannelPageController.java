@@ -5,14 +5,10 @@
  */
 package brogrammers;
 
-import java.awt.event.KeyEvent;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -48,7 +44,6 @@ public class FXMLChannelPageController implements Initializable {
                     System.out.println("Couldn't send message: "+ex.getMessage());
                 }
             }
-            addMessage("You: "+txt_message.getText());
             txt_message.setText("");
         }
     }
@@ -65,18 +60,19 @@ public class FXMLChannelPageController implements Initializable {
         }
     }
     
-    public void addMessage(String msg){
+    public void addMessage(String name, String msg){
         if(lst_messages.size() >= MAX_LEN){
             lst_messages.removeFirst();
         }
-        lst_messages.addLast(msg);
+        if (name.equals(ClientApp.nickname))
+            name = "you";
+        lst_messages.addLast(name + ">" + msg);
         renderMessages();
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lst_messages = new LinkedList<>();
-        ClientApp.channelController = this;
         
     }
     
