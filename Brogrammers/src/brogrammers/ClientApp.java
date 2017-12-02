@@ -25,6 +25,8 @@ public class ClientApp extends Application {
     
     private static final ArrayList<Bookmark> bookmarks = new ArrayList();
     
+    public static FXMLChannelPageController channelController;
+    
     public static ArrayList<Bookmark> getBookmarks() {
         return bookmarks;
     }
@@ -62,6 +64,10 @@ public class ClientApp extends Application {
     
     public static void parse(String command, String data) {
         System.out.println(command + "-" + data);
+        /*if(){
+           channelController.addMessage("Data") 
+        }*/
+        
     }
 
     /**
