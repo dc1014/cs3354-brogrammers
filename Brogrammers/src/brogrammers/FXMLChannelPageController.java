@@ -6,6 +6,7 @@
 package brogrammers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -27,15 +28,19 @@ public class FXMLChannelPageController implements Initializable {
     private TextField txt_message;
     @FXML
     private VBox box_messages;
+    @FXML
+    private Button btn_bookmark;
     
     private LinkedList<String> lst_messages;
     private int MAX_LEN = 15;
+    
+    public String channelName;
     
     @FXML
     private void handleBtnSend(ActionEvent event) {
         if(!(txt_message.getText().isEmpty())){
             if(Debugger.getInstance().isDebug()){
-                System.out.println("Message would have been sent but you're in Debug mode");
+                addMessage(ClientApp.nickname,txt_message.getText());
             }
             else{
                 try {
@@ -46,6 +51,31 @@ public class FXMLChannelPageController implements Initializable {
             }
             txt_message.setText("");
         }
+    }
+    
+    public void setBookmark() {
+        ArrayList<Bookmark> bookmarks = ClientApp.getBookmarks();
+        btn_bookmark.setText("Click to Bookmark");
+        for (Bookmark bm: bookmarks) {
+            if (bm.getChannel().equals(channelName))
+                btn_bookmark.setText("Bookmarked!");
+        }
+    }
+    
+    @FXML
+    private void handleBookmark(ActionEvent event) {
+        ArrayList<Bookmark> bookmarks = ClientApp.getBookmarks();
+        for (Bookmark bm: bookmarks) {
+            if (bm.getChannel().equals(channelName)) {
+                btn_bookmark.setText("Click to Bookmark");
+                bookmarks.remove(bm);
+                ClientApp.homeController.renderBookmarks();
+                return;
+            }
+        }
+        btn_bookmark.setText("Bookmarked!");
+        bookmarks.add(new Bookmark(channelName));
+        ClientApp.homeController.renderBookmarks();
     }
     
     private void renderMessages(){
@@ -73,6 +103,7 @@ public class FXMLChannelPageController implements Initializable {
     public void clearChannel() {
         lst_messages = new LinkedList<>();
         renderMessages();
+        channelName = null;
     }
     
     @Override

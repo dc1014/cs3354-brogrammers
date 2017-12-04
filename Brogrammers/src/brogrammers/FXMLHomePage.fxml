@@ -28,7 +28,7 @@
                 <Font name="Arial Black" size="15.0" />
             </font>
         </Label>
-        <Button fx:id="btn_sortBookmarks" layoutX="240.0" layoutY="250.0" onAction="#handleBtnSortBookmarks" text="Sort Bookmarks Alphabetically" />
+        <Button fx:id="btn_sortBookmarks" layoutX="240.0" layoutY="250.0" onAction="#handleBtnSortBookmarks" text="Sorted A-Z" />
       <VBox fx:id="bookmarksBox" layoutX="160.0" layoutY="300.0" prefHeight="230.0" prefWidth="386.0">
          <padding>
             <Insets bottom="20.0" />

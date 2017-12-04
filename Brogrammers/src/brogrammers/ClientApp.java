@@ -8,6 +8,7 @@ package brogrammers;
 import WebSocket.WebsocketClient;
 import constants.Command;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ public class ClientApp extends Application {
     private static final ArrayList<Bookmark> bookmarks = new ArrayList();
     
     public static FXMLChannelPageController channelController;
+    public static FXMLHomePageController homeController;
     
     public static String nickname;
     
@@ -44,7 +46,9 @@ public class ClientApp extends Application {
         channelController = channelLoader.getController();
         channelScene = new Scene(channelRoot);
         
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLHomePage.fxml"));
+        FXMLLoader homeLoader = new FXMLLoader(getClass().getResource("FXMLHomePage.fxml"));
+        Parent root = homeLoader.load();
+        homeController = homeLoader.getController();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Chat Room by Brogrammers");
@@ -108,11 +112,17 @@ public class ClientApp extends Application {
         }
     }
     
+    public static void sortBookmarks(Comparator<Bookmark> comp) {
+        bookmarks.sort(comp);
+    }
+    
     public static void enterChannelPage(String channelName){
          Platform.runLater(() -> {
             Stage stage = new Stage();
             stage.setScene(channelScene);  
             stage.setTitle(channelName);
+            channelController.channelName = channelName;
+            channelController.setBookmark();
             stage.setOnCloseRequest(event -> {
                 try {
                     channelController.clearChannel();;

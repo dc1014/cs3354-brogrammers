@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import comparator.*;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
@@ -33,7 +34,7 @@ public class FXMLHomePageController implements Initializable {
     private Button btn_sortBookmarks;
     @FXML
     private VBox bookmarksBox;
-    private boolean sortAlphabetical; //True=Alphabetical; False=Reverse Alphabetical;
+    private Comparator<Bookmark> comp; //True=Alphabetical; False=Reverse Alphabetical;
     
     @FXML
     private void handleBtnJoinChannel(ActionEvent e) {
@@ -47,11 +48,10 @@ public class FXMLHomePageController implements Initializable {
     
     @FXML
     private void handleBtnSortBookmarks(ActionEvent e){
-        ArrayList<Bookmark> bookmarks = getBookmarks();
-        bookmarks.sort(sortAlphabetical ? new AlphabeticalComparator() : new NegativeAlphabeticalComparator());
-        sortAlphabetical = !sortAlphabetical;
-        ((Button) e.getSource()).setText("Sort Bookmarks"+(sortAlphabetical?"":" Reverse")+" Alphabetically");
-        renderBookmarks(bookmarks);
+        comp = comp instanceof NegativeAlphabeticalComparator ? new AlphabeticalComparator() : new NegativeAlphabeticalComparator();
+        ClientApp.sortBookmarks(comp);
+        ((Button) e.getSource()).setText("Sorted "+(comp instanceof AlphabeticalComparator?"A-Z":"Z-A"));
+        renderBookmarks();
     }
     
     private ArrayList<Bookmark> getBookmarks(){
@@ -84,10 +84,11 @@ public class FXMLHomePageController implements Initializable {
         }
     }
     
-    private void renderBookmarks(ArrayList<Bookmark> bookmarks){
+    protected void renderBookmarks(){
         ObservableList<Node> children = bookmarksBox.getChildren();
+        ClientApp.sortBookmarks(comp);
         children.remove(0, children.size());
-        for (Bookmark b: bookmarks) {
+        for (Bookmark b: ClientApp.getBookmarks()) {
             Button btn = new Button(b.getChannel());
             btn.setOnAction(e->handleChannelClick(e));
             btn.setPrefWidth(391);
@@ -97,9 +98,8 @@ public class FXMLHomePageController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        sortAlphabetical = true;
-        ArrayList<Bookmark> bookmarks = getBookmarks();
-        renderBookmarks(bookmarks);
+        comp = new AlphabeticalComparator();
+        renderBookmarks();
         if (ClientApp.nickname != null)
             lbl_nickname.setText(ClientApp.nickname);
         else 
