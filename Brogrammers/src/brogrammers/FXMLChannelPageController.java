@@ -70,6 +70,11 @@ public class FXMLChannelPageController implements Initializable {
         renderMessages();
     }
     
+    public void clearChannel() {
+        lst_messages = new LinkedList<>();
+        renderMessages();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lst_messages = new LinkedList<>();

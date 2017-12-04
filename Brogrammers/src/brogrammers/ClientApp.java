@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +31,7 @@ public class ClientApp extends Application {
     
     public static String nickname;
     
-    public static Parent channelRoot;
+    public static Scene channelScene;
     
     public static ArrayList<Bookmark> getBookmarks() {
         return bookmarks;
@@ -41,8 +40,9 @@ public class ClientApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader channelLoader = new FXMLLoader(getClass().getResource("FXMLChannelPage.fxml"));
-        channelRoot = (Parent) channelLoader.load();
+        Parent channelRoot = (Parent) channelLoader.load();
         channelController = channelLoader.getController();
+        channelScene = new Scene(channelRoot);
         
         Parent root = FXMLLoader.load(getClass().getResource("FXMLHomePage.fxml"));
         Scene scene = new Scene(root);
@@ -111,8 +111,16 @@ public class ClientApp extends Application {
     public static void enterChannelPage(String channelName){
          Platform.runLater(() -> {
             Stage stage = new Stage();
-            stage.setScene(new Scene(channelRoot));  
+            stage.setScene(channelScene);  
             stage.setTitle(channelName);
+            stage.setOnCloseRequest(event -> {
+                try {
+                    channelController.clearChannel();;
+                    WebsocketClient.getInstance().leaveChannel();
+                } catch (Exception ex) {
+                    Logger.getLogger(ClientApp.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
          });
     }

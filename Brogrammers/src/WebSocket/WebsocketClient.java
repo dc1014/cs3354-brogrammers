@@ -119,9 +119,9 @@ public class WebsocketClient {
      *@param name the name of the channel to leave
      *@exception Exception throws exception if the message fails to send
      */
-    public void leaveChannel(String name) throws Exception {
+    public void leaveChannel() throws Exception {
         if (session!=null) {
-            String data = Command.LEAVE + Command.DELIM + name;
+            String data = Command.LEAVE + Command.DELIM;
             session.getBasicRemote().sendText(data);
         }
     }
