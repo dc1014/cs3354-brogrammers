@@ -34,7 +34,7 @@ public class FXMLChannelPageController implements Initializable {
     private VBox userBox;
     
     private LinkedList<String> lst_messages;
-    private int MAX_LEN = 15;
+    private int MAX_LEN = 25;
     
     public String channelName;
     
