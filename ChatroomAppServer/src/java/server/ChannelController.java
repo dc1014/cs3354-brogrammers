@@ -73,9 +73,15 @@ public class ChannelController {
 
     String setNickname(String nickname, Session session) {
 
+        if (isInvalidNickname(nickname)) {
+            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "That nickname is invalid!";
+            WebsocketServer.sendMessage(response, session);
+            return response;
+        }
+        
         for(User user : users) {
             if (user.nickname.equals(nickname)) {
-                String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Nickname taken";
+                String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "That nickname is taken";
                 WebsocketServer.sendMessage(response, session);
                 return response;
             }
@@ -90,20 +96,18 @@ public class ChannelController {
     //attempts to put a user into a channel
     String joinChannel(String channel_name, Session session) {
         User u = getUserBySession(session);
-        if (u.channel != null) {
-            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Already in a channel";
-            WebsocketServer.sendMessage(response, session);
-            return response;
-        }
-        
         if (u == null) {
-            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Nickname not set";
+            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "You must set a nickname first!";
             WebsocketServer.sendMessage(response, session);
             return response;
         }
-        
+        if (u.channel != null) {
+            String response = Command.RESPONSE + Command.DELIM + Command.JOIN + Command.DELIM + Command.ERROR + Command.DELIM + "Already in a channel";
+            WebsocketServer.sendMessage(response, session);
+            return response;
+        }
         if (isInvalidChannelName(channel_name)) {
-            String response = Command.RESPONSE + Command.DELIM + Command.SETNAME + Command.DELIM + Command.ERROR + Command.DELIM + "Invalid channel name";
+            String response = Command.RESPONSE + Command.DELIM + Command.JOIN + Command.DELIM + Command.ERROR + Command.DELIM + "Invalid channel name";
             WebsocketServer.sendMessage(response, session);
             return response;
         }
@@ -126,6 +130,10 @@ public class ChannelController {
     
     boolean isInvalidChannelName(String channel_name) {
         return channel_name.matches("^\\s*$") || channel_name.matches("^.*[^a-zA-Z0-9\\s].*$");
+    }
+    
+    boolean isInvalidNickname(String name) {
+        return name.matches("^\\s*$") || name.matches("^.*[^a-zA-Z0-9\\s].*$") || name.toLowerCase().equals("you");
     }
 
     //removes user from a channel

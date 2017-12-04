@@ -43,7 +43,6 @@ public class FXMLHomePageController implements Initializable {
     @FXML
     private void handleBtnJoinChannel(ActionEvent e) {
         if(txt_channel.getText().isEmpty()){
-            //Can't be empty. Add validation here.
             return;
         }
         String name = txt_channel.getText();
@@ -56,20 +55,6 @@ public class FXMLHomePageController implements Initializable {
         ClientApp.sortBookmarks(comp);
         btn_sortBookmarks.setText("Sorted "+(comp instanceof AlphabeticalComparator?"A-Z":"Z-A"));
         renderBookmarks();
-    }
-    
-    private ArrayList<Bookmark> getBookmarks(){
-        ArrayList<Bookmark> bookmarks;
-        if(Debugger.getInstance().isDebug()){
-            bookmarks = new ArrayList<>();
-            bookmarks.add(new Bookmark("Alpha"));
-            bookmarks.add(new Bookmark("Gamma"));
-            bookmarks.add(new Bookmark("Beta"));
-        }
-        else{
-            bookmarks = ClientApp.getBookmarks();
-        }
-        return bookmarks;
     }
     
     private void handleChannelClick(ActionEvent e){

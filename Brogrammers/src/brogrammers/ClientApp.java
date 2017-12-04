@@ -36,6 +36,11 @@ public class ClientApp extends Application {
     public static Scene channelScene;
     
     public static ArrayList<Bookmark> getBookmarks() {
+        if(Debugger.getInstance().isDebug() && bookmarks.isEmpty()){
+            bookmarks.add(new Bookmark("Alpha"));
+            bookmarks.add(new Bookmark("Gamma"));
+            bookmarks.add(new Bookmark("Beta"));
+        }
         return bookmarks;
     }
     
@@ -52,13 +57,16 @@ public class ClientApp extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Chat Room by Brogrammers");
-        //Nickname Box
+        stage.show();
+        ClientApp.getNickname("Please enter your nickname");
+    }
+    
+    public static void getNickname(String message) {
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Nickname");
-        dialog.setHeaderText("Please enter your nickname");
+        dialog.setHeaderText(message);
         dialog.setContentText("Nickname:");
         Optional<String> result = dialog.showAndWait();
-        
         result.ifPresent(name -> {
             try {
                 System.out.println(name);
@@ -66,9 +74,7 @@ public class ClientApp extends Application {
             } catch (Exception ex) {
                 Logger.getLogger(ClientApp.class.getName()).log(Level.SEVERE, null, ex);
             }
-            stage.show();
         });
-        
     }
     
     public static void print(String txt) {
@@ -88,7 +94,14 @@ public class ClientApp extends Application {
                     if (data[2].equals(Command.SUCCESS)) {
                         if (data.length == 3) return;
                         nickname = data[3];
-                        homeController.setName();
+                        Platform.runLater(() -> {
+                            homeController.setName();
+                        });
+                    }
+                    else {
+                        Platform.runLater(() -> {
+                            ClientApp.getNickname(data[3]);
+                        });
                     }
                     break;
                     
@@ -118,7 +131,7 @@ public class ClientApp extends Application {
     }
     
     public static void enterChannelPage(String channelName){
-         Platform.runLater(() -> {
+        Platform.runLater(() -> {
             Stage stage = new Stage();
             stage.setScene(channelScene);  
             stage.setTitle(channelName);
@@ -133,7 +146,7 @@ public class ClientApp extends Application {
                 }
             });
             stage.show();
-         });
+        });
     }
 
     /**
