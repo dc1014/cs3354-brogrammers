@@ -30,6 +30,8 @@ public class FXMLChannelPageController implements Initializable {
     private VBox box_messages;
     @FXML
     private Button btn_bookmark;
+    @FXML
+    private VBox userBox;
     
     private LinkedList<String> lst_messages;
     private int MAX_LEN = 15;
@@ -90,6 +92,16 @@ public class FXMLChannelPageController implements Initializable {
         }
     }
     
+    protected void setUsers(ArrayList<String> names){
+        ObservableList<Node> children = userBox.getChildren();
+        children.remove(0, children.size());
+        for (String n: names) {
+            Label user = new Label(n);
+            user.setPrefWidth(391);
+            children.add(user);
+        }
+    }
+    
     public void addMessage(String name, String msg){
         if(lst_messages.size() >= MAX_LEN){
             lst_messages.removeFirst();
@@ -104,6 +116,7 @@ public class FXMLChannelPageController implements Initializable {
         lst_messages = new LinkedList<>();
         renderMessages();
         channelName = null;
+        setUsers(new ArrayList());
     }
     
     @Override

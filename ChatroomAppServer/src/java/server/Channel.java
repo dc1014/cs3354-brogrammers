@@ -1,5 +1,6 @@
 package server;
 
+import constants.Command;
 import java.util.ArrayList;
 //import javax.websocket.Session;
 
@@ -18,19 +19,20 @@ public class Channel {
         return users.isEmpty();
     }
     
-    //updates all users in room except user
-    public void updateUsers(User user) {
-        users.stream().filter((u) -> (user == null || !user.session.getId().equals(u.session.getId()))).forEachOrdered((u) -> {
-            WebsocketServer.sendMessage(this.toString(), u.session);
+    
+    public void updateUsers() {
+        users.stream().forEachOrdered((u) -> {
+            WebsocketServer.sendMessage(Command.LIST + Command.DELIM + this.toString(), u.session);
         });
     }
 
     @Override
     public String toString(){
-        String str = "USERS/[";
-        for (int i = 0; i < users.size(); i++)
-            str += "\""+users.get(i).nickname + (i==users.size()-1?"\"":"\", ");
-        return str + "]";
+        if (users.isEmpty()) return "";
+        String str = users.get(0).nickname;
+        for (int i = 1; i < users.size(); i++)
+            str += Command.DELIM + users.get(i).nickname;
+        return str;
     }
 
     public void emit(String string) {

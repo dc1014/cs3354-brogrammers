@@ -68,7 +68,10 @@ public class ChannelController {
     public void disconnect(Session session){
         User u = getUserBySession(session);
         users.remove(u);
-        leaveChannel(u);
+        if (u == null) return;
+        if (u.channel == null) return;
+        u.channel.users.remove(u);
+        u.channel.updateUsers();
     }
 
     String setNickname(String nickname, Session session) {
@@ -118,13 +121,15 @@ public class ChannelController {
             c = new Channel(channel_name);
             channels.add(c);
         }
-        
-        c.updateUsers(u);
-        c.users.add(u);
-        u.channel = c;        
+             
         
         String response = Command.RESPONSE + Command.DELIM + Command.JOIN + Command.DELIM + Command.SUCCESS + Command.DELIM + channel_name;
         WebsocketServer.sendMessage(response, session);
+        
+        c.users.add(u); 
+        c.updateUsers();
+        u.channel = c;  
+        
         return response;
     }
     
@@ -133,19 +138,26 @@ public class ChannelController {
     }
     
     boolean isInvalidNickname(String name) {
-        return name.matches("^\\s*$") || name.matches("^.*[^a-zA-Z0-9\\s].*$") || name.toLowerCase().equals("you");
+        return name.matches("^\\s*$") || name.matches("^.*[^a-zA-Z0-9\\s].*$") || 
+                name.toLowerCase().equals("you") || name.length() > 13;
     }
 
     //removes user from a channel
     String leaveChannel(User u) {
         Channel c = u.channel;
         u.channel = null;
-        c.users.remove(u);
-        if (c.isEmpty())
-            channels.remove(c);
         
-        String response = Command.RESPONSE + Command.DELIM + Command.LEAVE + Command.DELIM + Command.SUCCESS + Command.DELIM + "Left channel - " + c.name;
+        String response = Command.RESPONSE + Command.DELIM + Command.LEAVE + Command.DELIM + Command.SUCCESS + Command.DELIM + "Left channel";
         WebsocketServer.sendMessage(response, u.session);
+        
+        if (c != null) {
+            c.users.remove(u);
+            if (c.isEmpty())
+                channels.remove(c);
+            else
+                c.updateUsers();
+        }
+        
         return response;
     }
   

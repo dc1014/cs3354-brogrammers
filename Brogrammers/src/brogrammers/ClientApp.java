@@ -124,6 +124,15 @@ public class ClientApp extends Application {
                 
             }
         }
+        if (data[0].equals(Command.LIST)) {
+            ArrayList<String> names = new ArrayList<>();
+            for (int i = 1; i < data.length; i++) {
+                names.add(data[i]);
+                Platform.runLater(() -> {
+                    channelController.setUsers(names);
+                });
+            }
+        }
     }
     
     public static void sortBookmarks(Comparator<Bookmark> comp) {
