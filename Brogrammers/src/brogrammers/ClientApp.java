@@ -88,6 +88,7 @@ public class ClientApp extends Application {
                     if (data[2].equals(Command.SUCCESS)) {
                         if (data.length == 3) return;
                         nickname = data[3];
+                        homeController.setName();
                     }
                     break;
                     

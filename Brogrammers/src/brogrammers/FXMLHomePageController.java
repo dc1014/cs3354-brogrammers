@@ -36,6 +36,10 @@ public class FXMLHomePageController implements Initializable {
     private VBox bookmarksBox;
     private Comparator<Bookmark> comp; //True=Alphabetical; False=Reverse Alphabetical;
     
+    public void setName() {
+        lbl_nickname.setText(ClientApp.nickname);
+    }
+    
     @FXML
     private void handleBtnJoinChannel(ActionEvent e) {
         if(txt_channel.getText().isEmpty()){
@@ -50,7 +54,7 @@ public class FXMLHomePageController implements Initializable {
     private void handleBtnSortBookmarks(ActionEvent e){
         comp = comp instanceof NegativeAlphabeticalComparator ? new AlphabeticalComparator() : new NegativeAlphabeticalComparator();
         ClientApp.sortBookmarks(comp);
-        ((Button) e.getSource()).setText("Sorted "+(comp instanceof AlphabeticalComparator?"A-Z":"Z-A"));
+        btn_sortBookmarks.setText("Sorted "+(comp instanceof AlphabeticalComparator?"A-Z":"Z-A"));
         renderBookmarks();
     }
     
