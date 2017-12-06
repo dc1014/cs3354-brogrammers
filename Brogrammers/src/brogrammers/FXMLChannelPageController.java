@@ -34,7 +34,7 @@ public class FXMLChannelPageController implements Initializable {
     private VBox userBox;
     
     private LinkedList<String> lst_messages;
-    private int MAX_LEN = 25;
+    private int MAX_LEN = 22;
     
     public String channelName;
     
@@ -80,6 +80,10 @@ public class FXMLChannelPageController implements Initializable {
         ClientApp.homeController.renderBookmarks();
     }
     
+    /**
+     * Method used for rendering the messages. It clears the contents of the messages box and adds
+     * a new label for every item in the linked list containing messages.
+     */
     private void renderMessages(){
         ObservableList<Node> children = box_messages.getChildren();
         children.remove(0, children.size());
@@ -92,6 +96,9 @@ public class FXMLChannelPageController implements Initializable {
         }
     }
     
+    /**
+     * Renders the users in the users box by clearing and then sequentially adding to the users box
+    */
     protected void setUsers(ArrayList<String> names){
         ObservableList<Node> children = userBox.getChildren();
         children.remove(0, children.size());
@@ -102,6 +109,11 @@ public class FXMLChannelPageController implements Initializable {
         }
     }
     
+    /**
+     * Adds to the messages linked list (and removes old items if necessary)
+     * @param name Username
+     * @param msg Message
+     */
     public void addMessage(String name, String msg){
         if(lst_messages.size() >= MAX_LEN){
             lst_messages.removeFirst();
@@ -112,6 +124,9 @@ public class FXMLChannelPageController implements Initializable {
         renderMessages();
     }
     
+    /**
+     * Refresh Page
+     */
     public void clearChannel() {
         lst_messages = new LinkedList<>();
         renderMessages();

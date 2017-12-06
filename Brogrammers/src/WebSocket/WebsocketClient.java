@@ -22,10 +22,11 @@ public class WebsocketClient {
 
     private static WebsocketClient instance = null;
 
-    /*
+    /**
     *Gets the static singleton instance of WebsocketClient
     *
     *@return the singleton instance of WebsocketClient
+    * @throws Exception if instance cant be accessed
     */
     public static WebsocketClient getInstance() throws Exception{
         if (instance == null) 
@@ -35,16 +36,14 @@ public class WebsocketClient {
     
     private Session session;
   
-    /*
+    /**
      *Constructs the WebsocketClient instance.
      */
-    WebsocketClient() { 
-        //No access modifier means that only the package can access it.
-        //This trick was used to get around the fact that java does not have "friend" like c++
+    private WebsocketClient() { 
     }
 
-    /*
-     *Called asynchronously when the remote enpoint connecteion is established
+    /**
+     *Called asynchronously when the remote endpoint connection is established
      *
      *@param session an instance of the Session connection to the remote endpoint
      */
@@ -53,7 +52,7 @@ public class WebsocketClient {
         this.session = session;
     }
 
-    /*
+    /**
      *Called asynchronously when a message is recieved from the remote endpoint
      *Passes message on to client app to be parsed
      *
@@ -64,8 +63,8 @@ public class WebsocketClient {
         ClientApp.parse(message.split(Command.DELIM));
     }
 
-    /*
-     *Called asynchronously when the remote enpoint connecteion is closed
+    /**
+     *Called asynchronously when the remote endpoint connection is closed
      */
     @OnClose
     public void onClose() {
@@ -73,7 +72,7 @@ public class WebsocketClient {
     }
 
 
-    /*
+    /**
      *Sends a message to the remote endpoint.
      *This message will be sent to all users in the channel.
      *
@@ -87,7 +86,7 @@ public class WebsocketClient {
         }
     }
     
-    /*
+    /**
      *Attempts to set a nickname on the remote endpoint
      *
      *@param nickname The nickname to be set
@@ -100,7 +99,7 @@ public class WebsocketClient {
         }
     }
     
-    /*
+    /**
      *Attempts to join a channel on the remote endpoint
      *
      *@param name the name of the channel to be joined
@@ -113,10 +112,9 @@ public class WebsocketClient {
         }
     }
     
-    /*
+    /**
      *Attempts to leave a channel on the remote endpoint
      *
-     *@param name the name of the channel to leave
      *@exception Exception throws exception if the message fails to send
      */
     public void leaveChannel() throws Exception {
@@ -126,7 +124,7 @@ public class WebsocketClient {
         }
     }
     
-    /*
+    /**
      *Requests a list of all users in the channel
      *
      *@exception Exception throws exception if the message fails to send
@@ -138,18 +136,18 @@ public class WebsocketClient {
         }
     }
 
-    /*
+    /**
      *Attempts to connect to the remote endpoint via websocket connection
      *
      *@exception Exception thrown if unable to connect to remote endpoint
      */
     public void connectToWebSocket() throws Exception{
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        URI uri = URI.create("ws://localhost:8080/server/websocket");
+        URI uri = URI.create("ws://192.168.1.2:8080/server/websocket");
         container.connectToServer(this, uri);
     }
     
-    /*
+    /**
      *Checks whether or not the WebsocketClient instance 
      *is connected to the remote endpoint
      *

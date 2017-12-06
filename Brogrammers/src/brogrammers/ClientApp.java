@@ -21,7 +21,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
 /**
- *
+ * This is the class that is loaded up as the application starts
  * @author dc
  */
 public class ClientApp extends Application {
@@ -34,6 +34,7 @@ public class ClientApp extends Application {
     public static String nickname;
     
     public static Scene channelScene;
+   
     
     public static ArrayList<Bookmark> getBookmarks() {
         if(Debugger.getInstance().isDebug() && bookmarks.isEmpty()){
@@ -44,6 +45,10 @@ public class ClientApp extends Application {
         return bookmarks;
     }
     
+    /**
+     * FXML method that gets called right after main
+     * @param stage is the GUI handler
+     */
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader channelLoader = new FXMLLoader(getClass().getResource("FXMLChannelPage.fxml"));
@@ -61,6 +66,10 @@ public class ClientApp extends Application {
         ClientApp.getNickname("Please enter your nickname");
     }
     
+    /**
+     * Used for displaying the initial dialog asking for the nickname
+     * @param message is the window title
+     */
     public static void getNickname(String message) {
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Nickname");
@@ -81,10 +90,15 @@ public class ClientApp extends Application {
         System.out.println(txt);
     }
     
+    /**
+     * This method gets called by the WebSocketClient when a response is received from the server
+     * @param data is the data coming from the server. data[0] is the type of the message.
+     */
     public static void parse(String[] data) {
         for (String datum: data){
-            System.out.println(datum);
+            System.out.print(datum+' ');
         }
+        System.out.println();
         if (data.length == 0) return;
         if (data[0].equals(Command.RESPONSE)) {
             if (data.length == 1) return;
@@ -139,6 +153,9 @@ public class ClientApp extends Application {
         bookmarks.sort(comp);
     }
     
+    /**
+     * Navigates to the chanel page
+     */
     public static void enterChannelPage(String channelName){
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -159,6 +176,7 @@ public class ClientApp extends Application {
     }
 
     /**
+     * Runs before anything else. Connects to the WebSocketServer.
      * @param args the command line arguments
      */
     public static void main(String[] args) {
