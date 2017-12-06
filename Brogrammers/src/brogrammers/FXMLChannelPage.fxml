@@ -12,14 +12,14 @@
     <children>
         <HBox>
             <VBox layoutY="10" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <VBox fx:id="box_messages" prefHeight="430.0" prefWidth="0.0" style="-fx-background-color:#e0e0e0"/>
+                <VBox fx:id="boxMessages" prefHeight="430.0" prefWidth="0.0" style="-fx-background-color:#e0e0e0"/>
                 <HBox AnchorPane.bottomAnchor="10.0">    
-                    <TextField fx:id="txt_message"  onAction="#handleBtnSend" prefHeight="31.0" prefWidth="474.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" />
-                    <Button fx:id="btn_send" onAction="#handleBtnSend" prefHeight="31.0" text="Send" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor=".0" />
+                    <TextField fx:id="txtMessage"  onAction="#handleBtnSend" prefHeight="31.0" prefWidth="474.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" />
+                    <Button fx:id="btnSend" onAction="#handleBtnSend" prefHeight="31.0" text="Send" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor=".0" />
                 </HBox>
             </VBox>
             <VBox>
-                <Button fx:id="btn_bookmark" prefWidth="150" onAction="#handleBookmark" text="Send" AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="14.0" />
+                <Button fx:id="btnBookmark" prefWidth="150" onAction="#handleBookmark" text="Send" AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="14.0" />
                 <VBox fx:id="userBox" prefWidth="150.0" />
             </VBox>
         </HBox>    

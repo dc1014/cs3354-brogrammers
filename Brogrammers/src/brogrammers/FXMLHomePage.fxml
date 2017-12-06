@@ -18,18 +18,18 @@
             <Insets top="20.0" />
          </padding>
         </Label>
-        <Label fx:id="lbl_nickname" layoutX="178.0" layoutY="88.0" minHeight="16" minWidth="69" prefHeight="21.0" prefWidth="187.0" />
+        <Label fx:id="lblNickname" layoutX="178.0" layoutY="88.0" minHeight="16" minWidth="69" prefHeight="21.0" prefWidth="187.0" />
         <Label layoutX="50.0" layoutY="135.0" minHeight="16" minWidth="69" text="Join a Channel:" />
         <HBox layoutX="180" layoutY="130">
-            <TextField fx:id="txt_channel" prefHeight="31.0" prefWidth="200.0" onAction="#handleBtnJoinChannel" />
-            <Button fx:id="btn_joinChannel" onAction="#handleBtnJoinChannel" prefHeight="31.0" prefWidth="75.0" text="Join" />
+            <TextField fx:id="txtChannel" prefHeight="31.0" prefWidth="200.0" onAction="#handleBtnJoinChannel" />
+            <Button fx:id="btnJoinChannel" onAction="#handleBtnJoinChannel" prefHeight="31.0" prefWidth="75.0" text="Join" />
         </HBox>
         <Label alignment="CENTER" layoutY="220" prefHeight="23.0" prefWidth="701.0" text="Bookmarks">
             <font>
                 <Font name="Arial Black" size="15.0" />
             </font>
         </Label>
-        <Button fx:id="btn_sortBookmarks" layoutY="250.0" alignment="CENTER" layoutX="300.5" prefWidth="100" onAction="#handleBtnSortBookmarks" text="Sorted A-Z" />
+        <Button fx:id="btnSortBookmarks" layoutY="250.0" alignment="CENTER" layoutX="300.5" prefWidth="100" onAction="#handleBtnSortBookmarks" text="Sorted A-Z" />
       <VBox fx:id="bookmarksBox" layoutX="160.0" layoutY="300.0" prefHeight="230.0" prefWidth="386.0">
          <padding>
             <Insets bottom="20.0" />

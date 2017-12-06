@@ -27,25 +27,25 @@ import javafx.scene.layout.*;
 public class FXMLHomePageController implements Initializable {
     
     @FXML
-    private Label lbl_nickname;
+    private Label lblNickname;
     @FXML
-    private TextField txt_channel;
+    private TextField txtChannel;
     @FXML
-    private Button btn_sortBookmarks;
+    private Button btnSortBookmarks;
     @FXML
     private VBox bookmarksBox;
     private Comparator<Bookmark> comp; //True=Alphabetical; False=Reverse Alphabetical;
     
     public void setName() {
-        lbl_nickname.setText(ClientApp.nickname);
+        lblNickname.setText(ClientApp.nickname);
     }
     
     @FXML
     private void handleBtnJoinChannel(ActionEvent e) {
-        if(txt_channel.getText().isEmpty()){
+        if(txtChannel.getText().isEmpty()){
             return;
         }
-        String name = txt_channel.getText();
+        String name = txtChannel.getText();
         joinChannel(name);
     }
     
@@ -53,7 +53,7 @@ public class FXMLHomePageController implements Initializable {
     private void handleBtnSortBookmarks(ActionEvent e){
         comp = comp instanceof NegativeAlphabeticalComparator ? new AlphabeticalComparator() : new NegativeAlphabeticalComparator();
         ClientApp.sortBookmarks(comp);
-        btn_sortBookmarks.setText("Sorted "+(comp instanceof AlphabeticalComparator?"A-Z":"Z-A"));
+        btnSortBookmarks.setText("Sorted "+(comp instanceof AlphabeticalComparator?"A-Z":"Z-A"));
         renderBookmarks();
     }
     
@@ -101,9 +101,9 @@ public class FXMLHomePageController implements Initializable {
         comp = new AlphabeticalComparator();
         renderBookmarks();
         if (ClientApp.nickname != null)
-            lbl_nickname.setText(ClientApp.nickname);
+            lblNickname.setText(ClientApp.nickname);
         else 
-            lbl_nickname.setText("NOT SET");
+            lblNickname.setText("NOT SET");
     }    
     
 }

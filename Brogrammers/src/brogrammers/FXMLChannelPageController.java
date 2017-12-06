@@ -25,42 +25,42 @@ import javafx.scene.layout.*;
 public class FXMLChannelPageController implements Initializable {
     
     @FXML
-    private TextField txt_message;
+    private TextField txtMessage;
     @FXML
-    private VBox box_messages;
+    private VBox boxMessages;
     @FXML
-    private Button btn_bookmark;
+    private Button btnBookmark;
     @FXML
     private VBox userBox;
     
-    private LinkedList<String> lst_messages;
+    private LinkedList<String> lstMessages;
     private int MAX_LEN = 22;
     
     public String channelName;
     
     @FXML
     private void handleBtnSend(ActionEvent event) {
-        if(!(txt_message.getText().isEmpty())){
+        if(!(txtMessage.getText().isEmpty())){
             if(Debugger.getInstance().isDebug()){
-                addMessage(ClientApp.nickname,txt_message.getText());
+                addMessage(ClientApp.nickname,txtMessage.getText());
             }
             else{
                 try {
-                    WebSocket.WebsocketClient.getInstance().sendMessage(txt_message.getText());
+                    WebSocket.WebsocketClient.getInstance().sendMessage(txtMessage.getText());
                 } catch (Exception ex) {
                     System.out.println("Couldn't send message: "+ex.getMessage());
                 }
             }
-            txt_message.setText("");
+            txtMessage.setText("");
         }
     }
     
     public void setBookmark() {
         ArrayList<Bookmark> bookmarks = ClientApp.getBookmarks();
-        btn_bookmark.setText("Click to Bookmark");
+        btnBookmark.setText("Click to Bookmark");
         for (Bookmark bm: bookmarks) {
             if (bm.getChannel().equals(channelName))
-                btn_bookmark.setText("Bookmarked!");
+                btnBookmark.setText("Bookmarked!");
         }
     }
     
@@ -69,13 +69,13 @@ public class FXMLChannelPageController implements Initializable {
         ArrayList<Bookmark> bookmarks = ClientApp.getBookmarks();
         for (Bookmark bm: bookmarks) {
             if (bm.getChannel().equals(channelName)) {
-                btn_bookmark.setText("Click to Bookmark");
+                btnBookmark.setText("Click to Bookmark");
                 bookmarks.remove(bm);
                 ClientApp.homeController.renderBookmarks();
                 return;
             }
         }
-        btn_bookmark.setText("Bookmarked!");
+        btnBookmark.setText("Bookmarked!");
         bookmarks.add(new Bookmark(channelName));
         ClientApp.homeController.renderBookmarks();
     }
@@ -85,9 +85,9 @@ public class FXMLChannelPageController implements Initializable {
      * a new label for every item in the linked list containing messages.
      */
     private void renderMessages(){
-        ObservableList<Node> children = box_messages.getChildren();
+        ObservableList<Node> children = boxMessages.getChildren();
         children.remove(0, children.size());
-        for (Iterator<String> it = lst_messages.iterator(); it.hasNext();) {
+        for (Iterator<String> it = lstMessages.iterator(); it.hasNext();) {
             String s = it.next();
             Label lbl = new Label();
             lbl.setText(s);
@@ -115,12 +115,12 @@ public class FXMLChannelPageController implements Initializable {
      * @param msg Message
      */
     public void addMessage(String name, String msg){
-        if(lst_messages.size() >= MAX_LEN){
-            lst_messages.removeFirst();
+        if(lstMessages.size() >= MAX_LEN){
+            lstMessages.removeFirst();
         }
         if (name.equals(ClientApp.nickname))
             name = "you";
-        lst_messages.addLast(name + ">" + msg);
+        lstMessages.addLast(name + ">" + msg);
         renderMessages();
     }
     
@@ -128,7 +128,7 @@ public class FXMLChannelPageController implements Initializable {
      * Refresh Page
      */
     public void clearChannel() {
-        lst_messages = new LinkedList<>();
+        lstMessages = new LinkedList<>();
         renderMessages();
         channelName = null;
         setUsers(new ArrayList());
@@ -136,7 +136,7 @@ public class FXMLChannelPageController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lst_messages = new LinkedList<>();
+        lstMessages = new LinkedList<>();
         
     }
     
