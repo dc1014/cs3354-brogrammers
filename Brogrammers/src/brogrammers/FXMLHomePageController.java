@@ -57,11 +57,19 @@ public class FXMLHomePageController implements Initializable {
         renderBookmarks();
     }
     
+    /**
+     * Event handler for bookmark buttons. Parses the caller and calls joinChannel()
+     * @param e e.getSource() contains the caller.
+     */
     private void handleChannelClick(ActionEvent e){
         String name = ((Button)(e.getSource())).getText();
         joinChannel(name);
     }
     
+    /**
+     * Makes the WebSocketClient connect to the channel
+     * @param name channel name 
+     */
     private void joinChannel(String name) {
         if (Debugger.getInstance().isDebug())
             ClientApp.enterChannelPage(name);
@@ -73,6 +81,9 @@ public class FXMLHomePageController implements Initializable {
         }
     }
     
+    /**
+     * Updates bookmarksBox with the current bookmarks from ClientApp.getBookmarks()
+     */
     protected void renderBookmarks(){
         ObservableList<Node> children = bookmarksBox.getChildren();
         ClientApp.sortBookmarks(comp);
