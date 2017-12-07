@@ -41,11 +41,11 @@ Please note tests are also run through Netbeans.
 
 ## Implemented functionality includes:
 
-1. User can set nickname for use in channels
-2. Users can join channels
-3. Users can see list of other users in the same channel
-4. Users can send and receive messages in a channel
-5. Users can leave a channel
-6. Users can add channels to bookmarks
-7. Users can alphabetically sort bookmarked channels
-8. Users can join bookmarked channels via the Homepage
+* User can set nickname for use in channels
+* Users can join channels
+* Users can see list of other users in the same channel
+* Users can send and receive messages in a channel
+* Users can leave a channel
+* Users can add channels to bookmarks
+* Users can alphabetically sort bookmarked channels
+* Users can join bookmarked channels via the Homepage
