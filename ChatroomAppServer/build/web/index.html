@@ -9,49 +9,8 @@ and open the template in the editor.
         <title>Chat</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="Websocket.js"></script>
-        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div id="home">
-            <div class="title-panel panel"><h1>Chat Room</h1></div>
-            <div class="nickname-panel panel">
-                <h3>Nicknames</h3>
-                <div class="bar">
-                    <input id="name_input" placeholder="Set a Nickname">
-                    <button id="set_button" type="button">Set</button>
-                </div>
-            </div>
-            <div class="join-panel panel">
-                <h4 id="name">Current Nickname: NOT SET</h4>
-                <div class="bar">
-                    <input id="channel_input" placeholder="Join a Channel">
-                    <button id="join" type="button">Join</button>
-                </div>
-            </div>
-            <div class="bookmark-panel panel">
-                <h3>Bookmarks</h3>
-                <div id="bookmarks"></div>
-                <div class="remove-bookmark">
-                    <button id="remove_button" type="button">Remove Bookmarks</button>
-                </div>
-            </div>
-        </div>
-        <div id="channel" hidden>
-            <div class="title-panel panel"><h2 id="title">room_name</h2></div>
-            <div class="messenger-panel panel">
-                <ul id="messages">
-                </ul>
-                <div class="bar">
-                    <input id="message_input" placeholder="Send a Message">
-                    <button id="send" type="button">Send</button>
-                </div>
-            </div>
-            <div class="settings-panel panel">
-                <button id="bookmark" type="button">Bookmark</button>
-                <button id="leave" type="button">Leave</button>
-                <div id="users"></div>
-            </div>
-        </div>
+        <h2>Server is now running</h2>
     </body>
 </html>

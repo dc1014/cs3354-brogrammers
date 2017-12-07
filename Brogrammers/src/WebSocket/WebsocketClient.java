@@ -143,7 +143,7 @@ public class WebsocketClient {
      */
     public void connectToWebSocket() throws Exception{
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        URI uri = URI.create("ws://192.168.1.2:8080/server/websocket");
+        URI uri = URI.create("ws://localhost:8080/server/websocket");
         container.connectToServer(this, uri);
     }
     
